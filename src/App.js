@@ -1,23 +1,40 @@
-import logo from './logo.svg';
+import React, { useState, useCallback, useMemo } from 'react';
+
 import './App.css';
+import DemoList from './components/Demo/DemoList';
+import Button from './components/UI/Button/Button';
 
 function App() {
+  const [listTitle, setListTitle] = useState('My List');
+  const [listOrder, setListOrder] = useState('asc');
+
+
+  // true = already in ascending order or any other order and button text displays 'Change to Descending Order'
+  // When button is clicked text changes to ascending order and the list changes to descending order so 
+  // false = list is in descending order
+
+  const changeOrderHandler = useCallback(() => {
+    setListOrder(prevOrder => prevOrder === 'asc' ? 'desc' : 'asc');
+  }, []);
+  
+
+  const changeTitleHandler = useCallback(() => {
+    setListTitle('New Title');
+  }, []);
+
+  const listItems = useMemo(() => [5, 3, 1, 10, 9], []);
+
+  
+  
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <DemoList title={listTitle} items={listItems} listOrder={listOrder} />
+      <Button onClick={changeTitleHandler}>Change List Title</Button>
+      <Button onClick={changeOrderHandler}>
+  {listOrder === 'asc' ? 'Change to Descending Order' : 'Change to Ascending Order'}
+</Button>
+
     </div>
   );
 }
